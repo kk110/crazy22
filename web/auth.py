@@ -1,11 +1,9 @@
-#!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
 from django.db import models
 from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser
 )
-
 
 class UserProfileManager(BaseUserManager):
     def create_user(self, email, name, password=None):
@@ -45,6 +43,9 @@ class UserProfile(AbstractBaseUser):
         unique=True,
     )
     name = models.CharField(max_length=32)
+    # 由于在单独文件中无法导入BindHost和HostGroup模块，所以将两文件集合到一起
+    bind_hosts = models.ManyToManyField(BindHost, blank=True,null=True)
+    host_groups = models.ManyToManyField(HostGroups, blank=True,null=True)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
 
