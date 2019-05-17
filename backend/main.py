@@ -1,4 +1,6 @@
-class ManagementUtils(object):
+from backend.db import Interaction
+
+class ManagementUtility(object):
     """
     分发用户指令
     """
@@ -16,8 +18,9 @@ class ManagementUtils(object):
 
     def help_msg(self):
         print("""help msg:
-            run    启动堡垒机用户入口
+            输入run    启动堡垒机用户入口
         """)
 
     def run(self, *args, **kwargs):
-        print("--running--", args)
+        print("--running--")
+        Interaction(*args, **kwargs)
