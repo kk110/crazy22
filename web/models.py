@@ -1,4 +1,6 @@
 from django.db import models
+
+
 # from django.contrib.auth.models import User
 # from web.auth import UserProfile
 
@@ -51,11 +53,21 @@ class RemoteUser(models.Model):
 #     def __str__(self):
 #         return self.name
 
+class SessionRecord(models.Model):
+    """存储ssh登录的各种信息"""
+    user = models.ForeignKey("UserProfile", on_delete=models.CASCADE, verbose_name='堡垒机账号')
+    bind_host = models.ForeignKey("BindHost", on_delete=models.CASCADE, verbose_name='登录主机及远程账户')
+    random_tag = models.CharField(max_length=64, verbose_name='随机标签')
+    data = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return '%s  %s' % (self.user.email, self.bind_host)
+
 
 class BindHost(models.Model):
     """关联主机和远程用户信息"""
-    host = models.ForeignKey('Host',on_delete=models.CASCADE)
-    remote_user = models.ForeignKey('RemoteUser',on_delete=models.CASCADE)
+    host = models.ForeignKey('Host', on_delete=models.CASCADE)
+    remote_user = models.ForeignKey('RemoteUser', on_delete=models.CASCADE)
 
     def __str__(self):
         return '<%s:%s>' % (self.host, self.remote_user)
